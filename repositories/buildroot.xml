@@ -1,0 +1,6 @@
+<image>
+	<repository type="rpm-md" alias="koji-buildroot" sourcetype="baseurl">
+		<source path="https://kojihub.stream.centos.org/kojifiles/repos/c${releasever}s-build/latest/$basearch/">
+		</source>
+	</repository>
+</image>

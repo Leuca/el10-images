@@ -1,0 +1,35 @@
+<image>
+	<profiles>
+		<profile name="DesktopCommon" description="Common desktop packages"/>
+		<profile name="GNOME-Desktop" description="GNOME Desktop">
+			<requires profile="DesktopCommon"/>
+		</profile>
+		<profile name="KDE-Desktop" description="KDE Plasma Desktop">
+			<requires profile="DesktopCommon"/>
+		</profile>
+	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="DesktopCommon">
+		<package name="centos-backgrounds"/>
+		<namedCollection name="base-x"/>
+		<namedCollection name="internet-browser"/>
+		<namedCollection name="fonts"/>
+		<namedCollection name="multimedia"/>
+		<namedCollection name="networkmanager-submodules"/>
+		<namedCollection name="office-suite"/>
+		<namedCollection name="hardware-support"/>
+		<namedCollection name="print-client"/>
+		<namedCollection name="guest-desktop-agents"/>
+		<namedCollection name="standard"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="GNOME-Desktop">
+		<namedCollection name="gnome-desktop"/>
+		<namedCollection name="gnome-apps"/>
+		<namedCollection name="workstation-product"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="KDE-Desktop">
+		<namedCollection name="kde-desktop"/>
+		<namedCollection name="kde-apps"/>
+		<namedCollection name="kde-media"/>
+		<package name="fuse"/>
+	</packages>
+</image>
