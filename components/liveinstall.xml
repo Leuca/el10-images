@@ -9,7 +9,7 @@
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
-	<packages type="image" patternType="plusRecommended" profiles="LiveInstall">
+	<packages type="iso" patternType="plusRecommended" profiles="LiveInstall">
 		<!-- The point of a live image is to install -->
 		<namedCollection name="anaconda-tools"/>
 		<package name="anaconda"/>
