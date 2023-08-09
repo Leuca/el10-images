@@ -33,12 +33,12 @@ set timeout_style=${boot_timeout_style}
 search ${search_params}
 
 menuentry "Start ${title}" --class fedora --class gnu-linux --class gnu --class os {
-	linux ($$root)${bootpath}/${kernel_file} rd.live.image ${boot_options}
+	linux ($$root)${bootpath}/${kernel_file} ${boot_options}
 	initrd ($$root)${bootpath}/${initrd_file}
 }
 submenu "Troubleshooting -->" {
 	menuentry "Start ${title} in basic graphics mode" --class fedora --class gnu-linux --class gnu --class os {
-		linux ($$root)${bootpath}/${kernel_file} rd.live.image ${boot_options} $${basicgfx}
+		linux ($$root)${bootpath}/${kernel_file} ${boot_options} $${basicgfx}
 		initrd ($$root)${bootpath}/${initrd_file}
 	}
 }
