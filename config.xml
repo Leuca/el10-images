@@ -24,7 +24,6 @@
 	<include from="this://./platforms/vagrant.xml"/>
 	<include from="this://./platforms/workstation.xml"/>
 	<packages type="image" patternType="plusRecommended">
-		<ignore name="rhc"/> <!-- work around broken epel comps groups -->
 		<namedCollection name="core"/>
 		<package name="chrony"/>
 		<package name="nano"/>
