@@ -14,7 +14,7 @@
 		<namedCollection name="anaconda-tools"/>
 		<package name="anaconda"/>
 		<package name="anaconda-install-env-deps"/>
-		<package name="anaconda-live"/>
+		<package name="anaconda-liveinst"/>
 		<!-- Need this for SVG release note images -->
 		<package name="aajohan-comfortaa-fonts"/>
 		<package name="dracut-live"/>
