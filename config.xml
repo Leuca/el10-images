@@ -24,6 +24,10 @@
 	<include from="this://./platforms/vagrant.xml"/>
 	<include from="this://./platforms/workstation.xml"/>
 	<packages type="image" patternType="plusRecommended">
+		<ignore name="kde-connect"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="kde-connect-libs"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="kde-connect-nautilus"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="kdeconnectd"/> <!-- kde-connect broken in epel9 #2159011 -->
 		<namedCollection name="core"/>
 		<package name="chrony"/>
 		<package name="nano"/>
