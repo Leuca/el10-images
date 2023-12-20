@@ -31,5 +31,9 @@
 		<namedCollection name="kde-apps"/>
 		<namedCollection name="kde-media"/>
 		<package name="fuse"/>
+		<ignore name="kde-connect"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="kde-connect-libs"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="kde-connect-nautilus"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="kdeconnectd"/> <!-- kde-connect broken in epel9 #2159011 -->
 	</packages>
 </image>
