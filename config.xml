@@ -7,7 +7,7 @@
 		<specification>CentOS Stream Alternative Images</specification>
 	</description>
 	<preferences>
-		<version>9.0.0</version>
+		<version>9</version>
 		<packagemanager>dnf</packagemanager>
 		<locale>en_US</locale>
 		<keytable>us</keytable>
