@@ -1,5 +1,8 @@
 <image>
 	<profiles>
+		<profile name="CINNAMON-Desktop" description="CINNAMON Desktop">
+			<requires profile="Lightdm"/>
+		</profile>
 		<profile name="DesktopCommon" description="Common desktop packages"/>
 		<profile name="GNOME-Desktop" description="GNOME Desktop">
 			<requires profile="DesktopCommon"/>
@@ -7,7 +10,28 @@
 		<profile name="KDE-Desktop" description="KDE Plasma Desktop">
 			<requires profile="DesktopCommon"/>
 		</profile>
+		<profile name="Lightdm" description="Lightdm Desktop Manager"/>
+		<profile name="LUMINA-Desktop" description="LUMINA Desktop"/>
+		<profile name="MATE-Desktop" description="MATE Desktop">
+			<requires profile="Lightdm"/>
+		</profile>
+		<profile name="MAX-Desktop" description="ALL The Desktops">
+			<requires profile="DesktopCommon"/>
+			<requires profile="CINNAMON-Desktop"/>
+			<requires profile="GNOME-Desktop"/>
+			<requires profile="KDE-Desktop"/>
+			<requires profile="LUMINA-Desktop"/>
+			<requires profile="MATE-Desktop"/>
+			<requires profile="XFCE-Desktop"/>
+		</profile>
+		<profile name="XFCE-Desktop" description="XFCE4 Desktop">
+			<requires profile="Lightdm"/>
+		</profile>
 	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="CINNAMON-Desktop">
+		<package name="cinnamon"/>
+		<package name="slick-greeter-cinnamon"/>
+	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="DesktopCommon">
 		<package name="centos-backgrounds"/>
 		<namedCollection name="base-x"/>
@@ -35,5 +59,93 @@
 		<ignore name="kde-connect-libs"/> <!-- kde-connect broken in epel9 #2159011 -->
 		<ignore name="kde-connect-nautilus"/> <!-- kde-connect broken in epel9 #2159011 -->
 		<ignore name="kdeconnectd"/> <!-- kde-connect broken in epel9 #2159011 -->
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="Lightdm">
+		<package name="lightdm"/>
+		<package name="lightdm-gtk"/>
+		<package name="xorg-x11-server-Xorg"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="LUMINA-Desktop">
+		<package name="lumina-archiver"/>
+		<package name="lumina-config"/>
+		<package name="lumina-desktop"/>
+		<package name="lumina-fileinfo"/>
+		<package name="lumina-fm"/>
+		<package name="lumina-icons"/>
+		<package name="lumina-mediaplayer"/>
+		<package name="lumina-photo"/>
+		<package name="lumina-screenshot"/>
+		<package name="lumina-search"/>
+		<package name="lumina-textedit"/>
+		<package name="lumina-xconfig"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="MATE-Desktop">
+		<package name="caja"/>
+		<package name="caja-actions"/>
+		<package name="caja-beesu"/>
+		<package name="caja-image-converter"/>
+		<package name="caja-open-terminal"/>
+		<package name="caja-sendto"/>
+		<package name="caja-share"/>
+		<package name="caja-wallpaper"/>
+		<package name="caja-xattr-tags"/>
+		<package name="engrampa"/>
+		<package name="eom"/>
+		<package name="f39-backgrounds-extras-mate"/>
+		<package name="f39-backgrounds-mate"/>
+		<package name="gtk2-engines"/>
+		<package name="libmatekbd"/>
+		<package name="libmatemixer"/>
+		<package name="libmateweather"/>
+		<package name="marco"/>
+		<package name="mate-backgrounds"/>
+		<package name="mate-calc"/>
+		<package name="mate-control-center"/>
+		<package name="mate-desktop"/>
+		<package name="mate-dictionary"/>
+		<package name="mate-disk-usage-analyzer"/>
+		<package name="mate-icon-theme"/>
+		<package name="mate-media"/>
+		<package name="mate-menu"/>
+		<package name="mate-menus"/>
+		<package name="mate-menus-preferences-category-menu"/>
+		<package name="mate-notification-daemon"/>
+		<package name="mate-panel"/>
+		<package name="mate-polkit"/>
+		<package name="mate-power-manager"/>
+		<package name="mate-screensaver"/>
+		<package name="mate-screenshot"/>
+		<package name="mate-search-tool"/>
+		<package name="mate-sensors-applet"/>
+		<package name="mate-session-manager"/>
+		<package name="mate-settings-daemon"/>
+		<package name="mate-system-log"/>
+		<package name="mate-system-monitor"/>
+		<package name="mate-terminal"/>
+		<package name="mate-themes"/>
+		<package name="mate-user-admin"/>
+		<package name="mate-user-guide"/>
+		<package name="mate-utils"/>
+		<package name="mozo"/>
+		<package name="network-manager-applet"/>
+		<package name="nm-connection-editor"/>
+		<package name="orca"/>
+		<package name="parole"/>
+		<package name="pavucontrol"/>
+		<package name="pluma"/>
+		<package name="pluma-plugins"/>
+		<package name="seahorse"/>
+		<package name="seahorse-caja"/>
+		<package name="slick-greeter-mate"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="MAX-Desktop">
+		<package name="icewm"/>
+		<package name="icewm-themes"/>
+		<package name="plasma-workspace-x11"/>
+		<ignore name="insights-client"/> <!-- Not in CentOS Stream -->
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="XFCE-Desktop">
+		<namedCollection name="xfce-desktop"/>
+		<ignore name="gdm"/> <!-- Live is setup for lightdm -->
 	</packages>
 </image>

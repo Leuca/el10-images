@@ -64,11 +64,23 @@ fi
 if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	## Enable livesys services
 	systemctl enable livesys.service livesys-late.service
+	if [[ "$kiwi_profiles" == *"CINNAMON"* ]]; then
+		echo 'livesys_session="cinnamon"' > /etc/sysconfig/livesys
+	fi
 	if [[ "$kiwi_profiles" == *"GNOME"* ]]; then
 		echo 'livesys_session="gnome"' > /etc/sysconfig/livesys
 	fi
 	if [[ "$kiwi_profiles" == *"KDE"* ]]; then
 		echo 'livesys_session="kde"' > /etc/sysconfig/livesys
+	fi
+	if [[ "$kiwi_profiles" == *"MATE"* ]]; then
+		echo 'livesys_session="mate"' > /etc/sysconfig/livesys
+	fi
+	if [[ "$kiwi_profiles" == *"MAX"* ]]; then
+		echo 'livesys_session="max"' > /etc/sysconfig/livesys
+	fi
+	if [[ "$kiwi_profiles" == *"XFCE"* ]]; then
+		echo 'livesys_session="xfce"' > /etc/sysconfig/livesys
 	fi
 fi
 
@@ -84,10 +96,34 @@ mkdir -p /var/log/journal
 #======================================
 # Setup default target
 #--------------------------------------
-if [[ "$kiwi_profiles" == *"GNOME"* ]] || [[ "$kiwi_profiles" == *"KDE"* ]]; then
+if [[ "$kiwi_profiles" == *"Live"* ]] ; then
 	systemctl set-default graphical.target
 else
 	systemctl set-default multi-user.target
+fi
+
+#======================================
+# There is no setup for MAX, create our own
+#--------------------------------------
+if [[ "$kiwi_profiles" == *"MAX"* ]]; then
+cat > /usr/libexec/livesys/sessions.d/livesys-max << MAX_EOF
+#!/bin/sh
+#
+# live-max: max specific setup for livesys
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# show liveinst.desktop on desktop and in menu
+sed -i 's/NoDisplay=true/NoDisplay=false/' /usr/share/applications/liveinst.desktop
+mkdir /home/liveuser/Desktop
+cp -a /usr/share/applications/liveinst.desktop /home/liveuser/Desktop/
+
+# no updater applet in live environment
+rm -f /etc/xdg/autostart/org.mageia.dnfdragora-updater.desktop
+MAX_EOF
+chmod 755 /usr/libexec/livesys/sessions.d/livesys-max
+# Use sddm
+systemctl enable sddm -f
 fi
 
 #======================================
