@@ -22,7 +22,6 @@
 			<requires profile="KDE-Desktop"/>
 			<requires profile="LUMINA-Desktop"/>
 			<requires profile="MATE-Desktop"/>
-			<requires profile="XFCE-Desktop"/>
 		</profile>
 		<profile name="XFCE-Desktop" description="XFCE4 Desktop">
 			<requires profile="Lightdm"/>
@@ -139,6 +138,7 @@
 		<package name="slick-greeter-mate"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="MAX-Desktop">
+		<namedCollection name="xfce-desktop"/>
 		<package name="icewm"/>
 		<package name="icewm-themes"/>
 		<package name="plasma-workspace-x11"/>
