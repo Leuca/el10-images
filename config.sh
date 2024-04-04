@@ -117,6 +117,11 @@ cat > /usr/libexec/livesys/sessions.d/livesys-max << MAX_EOF
 sed -i 's/NoDisplay=true/NoDisplay=false/' /usr/share/applications/liveinst.desktop
 mkdir /home/liveuser/Desktop
 cp -a /usr/share/applications/liveinst.desktop /home/liveuser/Desktop/
+# and mark it as executable (security feature)
+chmod +x /home/liveuser/Desktop/liveinst.desktop
+# and set xfce-exe-checksum metadata to make the harddisk installer desktop icon trusted (#2172854)
+LIVEINST_DESKTOP_CHECKSUM="$(sha256sum /home/liveuser/Desktop/liveinst.desktop | awk '{print $1}')"
+sudo -u liveuser dbus-launch gio set -t string /home/liveuser/Desktop/liveinst.desktop metadata::xfce-exe-checksum ${LIVEINST_DESKTOP_CHECKSUM}
 
 # no updater applet in live environment
 rm -f /etc/xdg/autostart/org.mageia.dnfdragora-updater.desktop
