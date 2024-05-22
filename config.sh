@@ -79,6 +79,9 @@ if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	if [[ "$kiwi_profiles" == *"MAX"* ]]; then
 		echo 'livesys_session="max"' > /etc/sysconfig/livesys
 	fi
+	if [[ "$kiwi_profiles" == *"MIN"* ]]; then
+		echo 'livesys_session="min"' > /etc/sysconfig/livesys
+	fi
 	if [[ "$kiwi_profiles" == *"XFCE"* ]]; then
 		echo 'livesys_session="xfce"' > /etc/sysconfig/livesys
 	fi
@@ -96,7 +99,7 @@ mkdir -p /var/log/journal
 #======================================
 # Setup default target
 #--------------------------------------
-if [[ "$kiwi_profiles" == *"Live"* ]] ; then
+if [[ "$kiwi_profiles" == *"Live"* ]] && ! [[ "$kiwi_profiles" == *"MIN"* ]] ; then
 	systemctl set-default graphical.target
 else
 	systemctl set-default multi-user.target
@@ -129,6 +132,41 @@ MAX_EOF
 chmod 755 /usr/libexec/livesys/sessions.d/livesys-max
 # Use sddm
 systemctl enable sddm -f
+fi
+
+#======================================
+# There is no setup for MIN, create our own
+#--------------------------------------
+if [[ "$kiwi_profiles" == *"MIN"* ]]; then
+cat > /usr/libexec/livesys/sessions.d/livesys-min << MIN_EOF
+#!/bin/sh
+#
+# live-max: max specific setup for livesys
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# no updater applet in live environment
+rm -f /etc/xdg/autostart/org.mageia.dnfdragora-updater.desktop
+MIN_EOF
+chmod 755 /usr/libexec/livesys/sessions.d/livesys-min
+# Setup Autologin for liveuser
+mkdir -p /etc/systemd/system/getty@tty1.service.d
+cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << MIN_LOGIN_EOF
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin liveuser %I $TERM
+MIN_LOGIN_EOF
+chmod 755 /etc/systemd/system/getty@tty1.service.d/autologin.conf
+# Cleanup Autologin after install
+cat > /usr/share/anaconda/post-scripts/86-noauto.ks << FIXBOOT_EOF
+%post
+
+echo "Cleanup Autologin"
+rm -rf /etc/systemd/system/getty@tty1.service.d
+
+%end
+FIXBOOT_EOF
+
 fi
 
 #======================================

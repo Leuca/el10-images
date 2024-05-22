@@ -23,6 +23,7 @@
 			<requires profile="LUMINA-Desktop"/>
 			<requires profile="MATE-Desktop"/>
 		</profile>
+		<profile name="MIN-Desktop" description="Text only desktop"/>
 		<profile name="XFCE-Desktop" description="XFCE4 Desktop">
 			<requires profile="Lightdm"/>
 		</profile>
@@ -143,6 +144,11 @@
 		<package name="icewm"/>
 		<package name="icewm-themes"/>
 		<package name="plasma-workspace-x11"/>
+		<ignore name="insights-client"/> <!-- Not in CentOS Stream -->
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="MIN-Desktop">
+		<package name="bash"/>
+		<package name="libusbx"/>
 		<ignore name="insights-client"/> <!-- Not in CentOS Stream -->
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="XFCE-Desktop">
