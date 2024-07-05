@@ -79,7 +79,7 @@ if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	if [[ "$kiwi_profiles" == *"MAX"* ]]; then
 		echo 'livesys_session="max"' > /etc/sysconfig/livesys
 	fi
-	if [[ "$kiwi_profiles" == *"MIN"* ]]; then
+	if [[ "$kiwi_profiles" == *"MIN-Live"* ]]; then
 		echo 'livesys_session="min"' > /etc/sysconfig/livesys
 	fi
 	if [[ "$kiwi_profiles" == *"XFCE"* ]]; then
@@ -99,7 +99,7 @@ mkdir -p /var/log/journal
 #======================================
 # Setup default target
 #--------------------------------------
-if [[ "$kiwi_profiles" == *"Live"* ]] && ! [[ "$kiwi_profiles" == *"MIN"* ]] ; then
+if [[ "$kiwi_profiles" == *"Live"* ]] && ! [[ "$kiwi_profiles" == *"MIN-Live"* ]] ; then
 	systemctl set-default graphical.target
 else
 	systemctl set-default multi-user.target
@@ -137,7 +137,7 @@ fi
 #======================================
 # There is no setup for MIN, create our own
 #--------------------------------------
-if [[ "$kiwi_profiles" == *"MIN"* ]]; then
+if [[ "$kiwi_profiles" == *"MIN-Live"* ]]; then
 cat > /usr/libexec/livesys/sessions.d/livesys-min << MIN_EOF
 #!/bin/sh
 #
@@ -147,6 +147,12 @@ cat > /usr/libexec/livesys/sessions.d/livesys-min << MIN_EOF
 
 # no updater applet in live environment
 rm -f /etc/xdg/autostart/org.mageia.dnfdragora-updater.desktop
+
+# Create the install script for the user
+echo "/usr/bin/liveinst --text" > /home/liveuser/install_to_hard_drive
+# and mark it as executable (security feature)
+chmod +x /home/liveuser/install_to_hard_drive
+
 MIN_EOF
 chmod 755 /usr/libexec/livesys/sessions.d/livesys-min
 # Setup Autologin for liveuser
