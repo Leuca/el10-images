@@ -153,6 +153,7 @@
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="XFCE-Desktop">
 		<namedCollection name="xfce-desktop"/>
+		<package name="xdg-user-dirs"/>
 		<ignore name="gdm"/> <!-- Live is setup for lightdm -->
 	</packages>
 </image>
