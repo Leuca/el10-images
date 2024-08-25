@@ -182,19 +182,4 @@ fi
 # anaconda-live icon is not being found.
 sed -i "s/org.fedoraproject.AnacondaInstaller/anaconda/" /usr/share/applications/liveinst.desktop
 
-# We are having problems with dracut not working
-# Put in a anaconda post-script to fix it
-cat > /usr/share/anaconda/post-scripts/85-fixboot.ks << FIXBOOT_EOF
-%post
-
-echo "Fixing, and re-running dracut"
-
-/usr/bin/sed -i "s/dmsquash-live livenet //" /etc/dracut.conf.d/02-livecd.conf
-/usr/bin/dracut -v --regenerate-all --force
-
-echo "initramfs now installed"
-
-%end
-FIXBOOT_EOF
-
 exit 0
