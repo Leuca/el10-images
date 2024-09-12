@@ -7,12 +7,12 @@
 		<specification>CentOS Stream Alternative Images</specification>
 	</description>
 	<preferences>
-		<version>9</version>
+		<version>10</version>
 		<packagemanager>dnf</packagemanager>
 		<locale>en_US</locale>
 		<keytable>us</keytable>
 		<timezone>UTC</timezone>
-		<release-version>9</release-version>
+		<release-version>10</release-version>
 	</preferences>
 	<include from="this://./repositories/core.xml"/>
 	<include from="this://./repositories/epel.xml"/>

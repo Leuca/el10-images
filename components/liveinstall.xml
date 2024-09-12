@@ -5,7 +5,7 @@
 		</profile>
 	</profiles>
 	<preferences profiles="LiveInstall">
-		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_AltImage" primary="true" flags="dmsquash" firmware="uefi" kernelcmdline="quiet rhgb" mediacheck="true">
+		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_AltImage" primary="true" flags="dmsquash" firmware="uefi" kernelcmdline="quiet rhgb">
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
@@ -15,8 +15,6 @@
 		<package name="anaconda"/>
 		<package name="anaconda-install-env-deps"/>
 		<package name="anaconda-liveinst"/>
-		<!-- Need this for SVG release note images -->
-		<package name="aajohan-comfortaa-fonts"/>
 		<package name="dracut-live"/>
 		<package name="glibc-all-langpacks"/>
 		<package name="isomd5sum"/>

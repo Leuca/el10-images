@@ -1,6 +1,6 @@
-# CentOS Stream 9 Alternative Image KIWI descriptions
+# CentOS Stream 10 Alternative Image KIWI descriptions
 
-This contains the KIWI descriptions for building Alternative Images for CentOS Stream 9.
+This contains the KIWI descriptions for building Alternative Images for CentOS Stream 10.
 
 ## Image variants
 
@@ -14,16 +14,16 @@ This contains the KIWI descriptions for building Alternative Images for CentOS S
 
 The instructions below will use the `podman` command. Docker may work, but it's not tested or supported.
 
-First, pull down the container of the required environment (CentOS Stream 9).
+First, pull down the container of the required environment (CentOS Stream 10).
 
 ```bash
-$ sudo podman pull quay.io/centos/centos:stream9
+$ sudo podman pull quay.io/centos/centos:stream10-development
 ```
 
 Assuming you're in the root directory of the Git checkout, set up the container:
 
 ```bash
-$ sudo podman run --privileged --rm -it -v $PWD:/code:z -w /code quay.io/centos/centos:stream9 /bin/bash
+$ sudo podman run --privileged --rm -it -v $PWD:/code:z -w /code quay.io/centos/centos:stream10-development /bin/bash
 ```
 
 Once in the container environment, set up your development environment and run the image build (substitute `<image_type>` and `<image_profile>` for the appropriate settings):
