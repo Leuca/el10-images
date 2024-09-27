@@ -16,16 +16,16 @@
 	</profiles>
 	<packages type="image" patternType="plusRecommended" profiles="DesktopCommon">
 		<package name="centos-backgrounds"/>
-		<namedCollection name="base-x"/>
-		<namedCollection name="internet-browser"/>
+		<package name="flatpak"/>
+		<namedCollection name="container-management"/>
 		<namedCollection name="fonts"/>
+		<namedCollection name="guest-desktop-agents"/>
+		<namedCollection name="hardware-support"/>
 		<namedCollection name="multimedia"/>
 		<namedCollection name="networkmanager-submodules"/>
-		<namedCollection name="office-suite"/>
-		<namedCollection name="hardware-support"/>
 		<namedCollection name="print-client"/>
-		<namedCollection name="guest-desktop-agents"/>
 		<namedCollection name="standard"/>
+		<ignore name="intel-audio-firmware"/> <!-- Not in CentOS Stream -->
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="GNOME-Desktop">
 		<namedCollection name="gnome-desktop"/>
