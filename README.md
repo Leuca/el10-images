@@ -7,6 +7,7 @@ This contains the KIWI descriptions for building Alternative Images for CentOS S
 * Cloud (image type: `oem`, image profiles: `OpenStack`/`AWSEC2`/`Azure`/`GCE`)
 * Workstation GNOME (image type: `iso`, image profiles: `GNOME-Live`)
 * Workstation KDE (image type: `iso`, image profiles: `KDE-Live`)
+* Text Only Live image (image type: `iso`, image profiles: `MIN-Live`)
 
 ## Image build quickstart
 
@@ -37,6 +38,8 @@ Once in the container environment, set up your development environment and run t
 []$ dnf --assumeyes install kiwi
 # Run the image build
 []$ kiwi-ng --type=<image_type> --profile=<image_profile> --color-output system build --description ./ --target-dir ./outdir
+# Example
+[]$ kiwi-ng --type=iso --profile=MIN-Live --color-output system build --description ./ --target-dir ./outdir
 ```
 
 ## Licensing
