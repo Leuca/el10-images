@@ -5,7 +5,9 @@
 		</profile>
 	</profiles>
 	<preferences profiles="LiveInstall">
-		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_AltImage" primary="true" flags="dmsquash" firmware="uefi" kernelcmdline="quiet rhgb">
+		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_AltImage" primary="true" flags="dmsquash"
+			firmware="uefi" efifatimagesize="30" kernelcmdline="quiet rhgb" mediacheck="true"
+		>
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
