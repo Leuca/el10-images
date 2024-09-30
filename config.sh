@@ -35,14 +35,23 @@ truncate -s 0 /etc/machine-id
 #======================================
 # Configure grub correctly
 #--------------------------------------
-## Works around issues with grub-bls
-## See: https://github.com/OSInside/kiwi/issues/2198
-echo "GRUB_DEFAULT=saved" >> /etc/default/grub
-
+if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]]; then
+	## Works around issues with grub-bls
+	## See: https://github.com/OSInside/kiwi/issues/2198
+	echo "GRUB_DEFAULT=saved" >> /etc/default/grub
+	## Enable chrony
+	systemctl enable chronyd.service
+	## Enable oomd
+	systemctl enable systemd-oomd.service
+	## Enable resolved
+	systemctl enable systemd-resolved.service
+	## Enable persistent journal
+	mkdir -p /var/log/journal
+fi
 #======================================
 # Delete & lock the root user password
 #--------------------------------------
-if [[ "$kiwi_profiles" == *"AWS"* ]] || [[ "$kiwi_profiles" == *"Azure"* ]] || [[ "$kiwi_profiles" == *"OpenStack"* ]] || [[ "$kiwi_profiles" == *"Live"* ]]; then
+if [[ "$kiwi_profiles" == *"AWS"* ]] || [[ "$kiwi_profiles" == *"Azure"* ]] || [[ "$kiwi_profiles" == *"OpenStack"* ]] || [[ "$kiwi_profiles" == *"Live"* ]] || [[ "$kiwi_profiles" == *"WSL"* ]]; then
 	passwd -d root
 	passwd -l root
 fi
@@ -85,16 +94,10 @@ if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	if [[ "$kiwi_profiles" == *"XFCE"* ]]; then
 		echo 'livesys_session="xfce"' > /etc/sysconfig/livesys
 	fi
-fi
+	# anaconda-live icon is not being found.
+	sed -i "s/org.fedoraproject.AnacondaInstaller/anaconda/" /usr/share/applications/liveinst.desktop
 
-## Enable chrony
-systemctl enable chronyd.service
-## Enable oomd
-systemctl enable systemd-oomd.service
-## Enable resolved
-systemctl enable systemd-resolved.service
-## Enable persistent journal
-mkdir -p /var/log/journal
+fi
 
 #======================================
 # Setup default target
@@ -175,11 +178,31 @@ FIXBOOT_EOF
 
 fi
 
+if [[ "$kiwi_profiles" == *"WSL"* ]]; then
+    # Without this systemd-firstboot attempts to prompt the user
+    # and many jobs get stuck waiting for eternity.
+    echo 'LC_MESSAGES=en_US.UTF-8' >>  /etc/locale.conf
+
+    # Set up a default user with sudo privileges
+    useradd -m -G wheel centos
+    cat > /etc/sudoers.d/centos << EOF
+centos ALL=(ALL) NOPASSWD:ALL
+EOF
+
+    # Boot using systemd. This requires WSL version 0.67.6 and above.
+    #
+    # Also sets the user created above to be the default user.
+    cat > /etc/wsl.conf << EOF
+[boot]
+systemd=true
+
+[user]
+default=centos
+EOF
+fi
+
 #======================================
 # Misc fixes and tweeks
 #--------------------------------------
-
-# anaconda-live icon is not being found.
-sed -i "s/org.fedoraproject.AnacondaInstaller/anaconda/" /usr/share/applications/liveinst.desktop
 
 exit 0

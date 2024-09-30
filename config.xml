@@ -20,6 +20,7 @@
 	<include from="this://./components/desktop-environments.xml"/>
 	<include from="this://./components/liveinstall.xml"/>
 	<include from="this://./components/users.xml"/>
+	<include from="this://./components/wsl.xml"/>
 	<include from="this://./platforms/cloud.xml"/>
 	<include from="this://./platforms/vagrant.xml"/>
 	<include from="this://./platforms/workstation.xml"/>
