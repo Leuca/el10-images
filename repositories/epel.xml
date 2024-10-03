@@ -1,6 +1,6 @@
 <image>
-	<repository type="rpm-md" alias="epel" sourcetype="baseurl">
-		<source path="https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/os/">
+	<repository type="rpm-md" alias="epel" sourcetype="metalink">
+		<source path="https://mirrors.fedoraproject.org/metalink?repo=epel-10&amp;arch=$basearch">
 			<signing key="file:///usr/share/distribution-gpg-keys/epel/RPM-GPG-KEY-EPEL-10"/>
 		</source>
 	</repository>
