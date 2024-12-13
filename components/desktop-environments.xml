@@ -25,25 +25,44 @@
 		<namedCollection name="networkmanager-submodules"/>
 		<namedCollection name="print-client"/>
 		<namedCollection name="standard"/>
+		<package name="chromium"/>
+		<package name="falkon"/>
 		<ignore name="intel-audio-firmware"/> <!-- Not in CentOS Stream -->
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="GNOME-Desktop">
 		<namedCollection name="gnome-desktop"/>
-		<namedCollection name="gnome-apps"/>
 		<namedCollection name="workstation-product"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="KDE-Desktop">
 		<namedCollection name="kde-desktop"/>
 		<namedCollection name="kde-apps"/>
 		<namedCollection name="kde-media"/>
+		<package name="chromium-qt6-ui"/>
 		<package name="fuse"/>
-		<ignore name="kde-connect"/> <!-- kde-connect broken in epel9 #2159011 -->
-		<ignore name="kde-connect-libs"/> <!-- kde-connect broken in epel9 #2159011 -->
-		<ignore name="kde-connect-nautilus"/> <!-- kde-connect broken in epel9 #2159011 -->
-		<ignore name="kdeconnectd"/> <!-- kde-connect broken in epel9 #2159011 -->
+		<ignore name="abrt-desktop"/>
+		<ignore name="adwaita-gtk2-theme"/>
+		<ignore name="digikam"/>
+		<ignore name="k3b"/>
+		<ignore name="kamoso"/>
+		<ignore name="kinfocenter"/>
+		<ignore name="krusader"/>
+		<ignore name="kpat"/>
+		<ignore name="krdc"/>
+		<ignore name="kwebkitpart"/>
+		<ignore name="neochat"/>
+		<ignore name="NetworkManager-config-connectivity-fedora"/>
+		<ignore name="phonon-qt6-backend-vlc"/>
+		<ignore name="pinentry-qt"/>
+		<ignore name="plasma-drkonqi"/>
+		<ignore name="plasma-nm-vpnc"/>
+		<ignore name="plasma-nm-openvpn"/>
+		<ignore name="plasma-nm-openconnect"/>
+		<ignore name="plasma-nm-l2tp"/>
+		<ignore name="plasma-nm-pptp"/>
+		<ignore name="systemd-oomd-defaults"/>
+		<ignore name="vlc-plugin-gstreamer"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="MAX-Desktop">
-		<namedCollection name="xfce-desktop"/>
 		<ignore name="insights-client"/> <!-- Not in CentOS Stream -->
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="MIN-Desktop">

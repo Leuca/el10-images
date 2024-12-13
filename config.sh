@@ -133,6 +133,8 @@ sudo -u liveuser dbus-launch gio set -t string /home/liveuser/Desktop/liveinst.d
 rm -f /etc/xdg/autostart/org.mageia.dnfdragora-updater.desktop
 MAX_EOF
 chmod 755 /usr/libexec/livesys/sessions.d/livesys-max
+# Cleanup duplicate gnome desktops
+rm -f /usr/share/wayland-sessions/gnome*wayland.desktop
 # Use sddm
 systemctl enable sddm -f
 fi
@@ -144,7 +146,7 @@ if [[ "$kiwi_profiles" == *"MIN-Live"* ]]; then
 cat > /usr/libexec/livesys/sessions.d/livesys-min << MIN_EOF
 #!/bin/sh
 #
-# live-max: max specific setup for livesys
+# live-min: min specific setup for livesys
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
