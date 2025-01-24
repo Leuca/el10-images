@@ -26,8 +26,6 @@
 		<namedCollection name="networkmanager-submodules"/>
 		<namedCollection name="print-client"/>
 		<namedCollection name="standard"/>
-		<package name="chromium"/>
-		<package name="falkon"/>
 		<ignore name="intel-audio-firmware"/> <!-- Not in CentOS Stream -->
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="GNOME-Desktop">
@@ -38,7 +36,7 @@
 		<namedCollection name="kde-desktop"/>
 		<namedCollection name="kde-apps"/>
 		<namedCollection name="kde-media"/>
-		<package name="chromium-qt6-ui"/>
+		<package name="falkon"/>
 		<package name="fuse"/>
 		<ignore name="abrt-desktop"/>
 		<ignore name="adwaita-gtk2-theme"/>
