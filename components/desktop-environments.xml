@@ -18,6 +18,7 @@
 		<package name="centos-backgrounds"/>
 		<package name="flatpak"/>
 		<namedCollection name="container-management"/>
+		<namedCollection name="internet-browser"/>
 		<namedCollection name="fonts"/>
 		<namedCollection name="guest-desktop-agents"/>
 		<namedCollection name="hardware-support"/>
