@@ -33,23 +33,23 @@ jobs:
         run: |
           sudo mkdir images
           sudo podman build --tag imagebuilder -f Containerfile
-          CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD/images:/images:rw,z,shared,bind,U --workdir=/images -d imagebuilder)"
-          sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./outdir
+          CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
+          sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./images
           sudo podman stop $CID
 #      - name: Sign
 #        uses: FKLC/sign-files-action@v1.0.0
 #        with:
 #          privateKey: ${{ secrets.PRIVATE_KEY }}
 #          extension: '.sha256.sig'
-#          outputFolder: 'images/outdir'
+#          outputFolder: 'images'
 #          files: |
-#            images/outdir/*.raw
+#            images/*.raw
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "images/outdir/*.raw"
+          artifacts: "images/*.raw"
           tag: ${{ steps.release.outputs.release }}
           commit: c10s
-#          artifacts: "public_key.pem,images/outdir/*.raw,images/outdir/*.sha256.sig"
+#          artifacts: "public_key.pem,images/*.raw,images/*.sha256.sig"
 #          name: ${{ steps.release.outputs.release }}
 #          tag: ${{ steps.release.outputs.release }}
