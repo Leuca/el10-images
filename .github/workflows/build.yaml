@@ -2,7 +2,7 @@ name: Image CI
 on:
   push:
     branches:
-      - c10s
+      - c10s-rpi
     pull_requests:
 
 permissions: write-all
@@ -28,7 +28,7 @@ jobs:
       - name: Version source
         run: |
           VER=${{ steps.release.outputs.release }}
-          sed -i "s/-Image/-$VER/g" config.xml
+          sed -i "s/-Image/-rpi64-$VER/g" config.xml
       - name: Create container and build image
         run: |
           export RUID=$(id -u)
@@ -36,13 +36,13 @@ jobs:
           sudo mkdir images
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
-          sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./images
+          sudo podman exec $CID kiwi-ng --type=iso --profile="RasbperryPiLive" --color-output system build --description ./ --target-dir ./images
           sudo podman stop $CID
           sudo chown -R $RUID:$RGID *
-      - name: Compress artifacts
-        run: |
-          IMGS=(images/*.raw)
-          xz -z -v -9 ${IMGS[0]}
+#      - name: Compress artifacts
+#        run: |
+#          IMGS=(images/*.raw)
+#          xz -z -v -9 ${IMGS[0]}
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
@@ -50,10 +50,10 @@ jobs:
           extension: '.sha256.sig'
           outputFolder: 'images'
           files: |
-            images/*.raw.xz
+            images/*.iso
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "public_key.pem,images/*.raw.xz,images/*.sha256.sig"
+          artifacts: "public_key.pem,images/*.iso,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
-          commit: c10s
+          commit: c10s-rpi

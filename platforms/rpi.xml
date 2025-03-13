@@ -1,0 +1,32 @@
+<image>
+	<profiles>
+		<profile name="RaspberryPiLive" description="Live install ISO for Raspberry Pi">
+			<requires profile="BootCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="RaspberryPiLive">
+		<type image="iso" primary="true" flags="dmsquash" firmware="uefi"
+			kernelcmdline="console=tty0 quiet rhgb acpi=off"
+			filesystem="erofs" erofscompression="lzma,level=9"
+			efifatimagesize="30" mediacheck="true"
+		>
+			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
+		</type>
+	</preferences>
+	<include from="this://./../repositories/rpi.xml"/>
+	<packages type="iso" patternType="plusRecommended" profiles="RaspberryPiLive">
+		<!-- The point of a live image is to install -->
+		<namedCollection name="anaconda-tools"/>
+		<package name="anaconda"/>
+		<package name="anaconda-install-env-deps"/>
+		<package name="anaconda-liveinst"/>
+		<package name="dracut-live"/>
+		<package name="glibc-all-langpacks"/>
+		<package name="isomd5sum"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="kernel-modules-extra"/>
+		<package name="livesys-scripts"/>
+		<ignore name="gfs2-utils"/>
+	</packages>
+</image>
