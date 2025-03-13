@@ -21,9 +21,9 @@
 	<include from="this://./components/liveinstall.xml"/>
 	<include from="this://./components/users.xml"/>
 	<include from="this://./components/wsl.xml"/>
+	<include from="this://./components/rpi.xml"/>
 	<include from="this://./platforms/cloud.xml"/>
 	<include from="this://./platforms/workstation.xml"/>
-	<include from="this://./platforms/rpi.xml"/>
 	<packages type="image" patternType="plusRecommended">
 		<namedCollection name="core"/>
 		<package name="chrony"/>

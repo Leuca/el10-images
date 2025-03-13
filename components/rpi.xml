@@ -1,20 +1,19 @@
 <image>
 	<profiles>
-		<profile name="RaspberryPiLive" description="Live install ISO for Raspberry Pi">
+		<profile name="LiveInstallPi" description="Live Install ISO for Raspberry Pi">
 			<requires profile="BootCore"/>
 		</profile>
 	</profiles>
-	<preferences profiles="RaspberryPiLive" arch="aarch64">
-		<type image="iso" primary="true" flags="dmsquash" firmware="uefi"
-			kernelcmdline="console=tty0 quiet rhgb acpi=off"
+	<preferences profiles="LiveInstallPi">
+		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_AltImage" primary="true" flags="dmsquash"
 			filesystem="erofs" erofscompression="lzma,level=9"
-			efifatimagesize="30" mediacheck="true"
+			firmware="uefi" efifatimagesize="30" kernelcmdline="console=tty0 quiet rhgb acpi=off" mediacheck="true"
 		>
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
 	<include from="this://./../repositories/rpi.xml"/>
-	<packages type="iso" patternType="plusRecommended" profiles="RaspberryPiLive">
+	<packages type="iso" patternType="plusRecommended" profiles="LiveInstallPi">
 		<!-- The point of a live image is to install -->
 		<namedCollection name="anaconda-tools"/>
 		<package name="anaconda"/>
