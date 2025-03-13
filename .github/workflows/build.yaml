@@ -31,15 +31,18 @@ jobs:
           sed -i "s/-Image/-$VER/g" config.xml
       - name: Create container and build image
         run: |
+          export RUID=$(id -u)
+          export RGID=$(id -g)
           sudo mkdir images
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
           sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./images
           sudo podman stop $CID
+          sudo chown -R $RUID:$RGID *
       - name: Compress artifacts
         run: |
           IMGS=(images/*.raw)
-          sudo xz -z -v -9 ${IMGS[0]}
+          xz -z -v -9 ${IMGS[0]}
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
