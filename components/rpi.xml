@@ -12,7 +12,6 @@
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
-	<include from="this://./../repositories/rpi.xml"/>
 	<packages type="iso" patternType="plusRecommended" profiles="LiveInstallPi">
 		<!-- The point of a live image is to install -->
 		<namedCollection name="anaconda-tools"/>
