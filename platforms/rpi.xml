@@ -4,7 +4,7 @@
 			<requires profile="BootCore"/>
 		</profile>
 	</profiles>
-	<preferences profiles="RaspberryPiLive">
+	<preferences profiles="RaspberryPiLive" arch="aarch64">
 		<type image="iso" primary="true" flags="dmsquash" firmware="uefi"
 			kernelcmdline="console=tty0 quiet rhgb acpi=off"
 			filesystem="erofs" erofscompression="lzma,level=9"
