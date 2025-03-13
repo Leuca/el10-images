@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo mkdir images
           sudo podman build --tag imagebuilder -f Containerfile
-          CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/images:rw,z,shared,bind,U --workdir=/images -d imagebuilder)"
+          CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD/images:/images:rw,z,shared,bind,U --workdir=/images -d imagebuilder)"
           sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./outdir
           sudo podman stop $CID
 #      - name: Sign
