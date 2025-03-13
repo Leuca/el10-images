@@ -19,7 +19,7 @@ jobs:
       - name: Setup Podman
         run: |
           sudo apt update
-          sudo apt-get -y install podman xz
+          sudo apt-get -y install podman xz-utils
           sudo podman pull centos:stream10-development
       - name: Get source
         uses: actions/checkout@v4
