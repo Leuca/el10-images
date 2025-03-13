@@ -28,7 +28,7 @@ jobs:
       - name: Version source
         run: |
           VER=${{ steps.release.outputs.release }}
-          sed -i "s/-Image/$VER/g" config.xml
+          sed -i "s/-Image/-$VER/g" config.xml
       - name: Create container and build image
         run: |
           sudo mkdir images
@@ -49,7 +49,7 @@ jobs:
         with:
           artifacts: "images/outdir/*.raw"
           tag: ${{ steps.release.outputs.release }}
+          commit: c10s
 #          artifacts: "public_key.pem,images/outdir/*.raw,images/outdir/*.sha256.sig"
 #          name: ${{ steps.release.outputs.release }}
 #          tag: ${{ steps.release.outputs.release }}
-#          commit: c10s
