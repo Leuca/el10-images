@@ -1,0 +1,50 @@
+name: Image CI
+on:
+  push:
+    branches:
+      - c10s
+    pull_requests:
+
+permissions: write-all
+
+jobs:
+  image:
+    name: Build Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Podman
+        run: |
+          sudo apt update
+          sudo apt-get -y install podman
+          sudo podman pull centos:stream10-development
+      - name: Get source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create container and build image
+        run: |
+          sudo mkdir images
+          sudo podman build --tag imagebuilder -f Containerfile
+          CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/images:rw,z,shared,bind,U --workdir=/images -d imagebuilder)"
+          sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./outdir
+          sudo podman stop $CID
+#      - name: Release
+#        run: echo "..."
+#        id: release
+#      - name: Sign
+#        uses: FKLC/sign-files-action@v1.0.0
+#        with:
+#          privateKey: ${{ secrets.PRIVATE_KEY }}
+#          extension: '.sha256.sig'
+#          outputFolder: 'images/outdir'
+#          files: |
+#            images/outdir/*.raw
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "images/outdir/*.raw"
+#          artifacts: "public_key.pem,images/outdir/*.raw,images/outdir/*.sha256.sig"
+#          name: ${{ steps.release.outputs.release }}
+#          tag: ${{ steps.release.outputs.release }}
+#          commit: c10s
