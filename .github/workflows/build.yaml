@@ -19,7 +19,7 @@ jobs:
       - name: Setup Podman
         run: |
           sudo apt update
-          sudo apt-get -y install podman
+          sudo apt-get -y install podman xz
           sudo podman pull centos:stream10-development
       - name: Get source
         uses: actions/checkout@v4
@@ -35,8 +35,11 @@ jobs:
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
           sudo podman exec $CID kiwi-ng --type=oem --profile="GCE" --color-output system build --description ./ --target-dir ./images
-          sudo podman exec $CID cd images && image=(*.raw) xz -z -9 ${image[0]}
           sudo podman stop $CID
+      - name: Compress artifacts
+        run: |
+          IMGS=(images/*.raw)
+          sudo xz -z -v -9 ${IMGS[0]}
 #      - name: Sign
 #        uses: FKLC/sign-files-action@v1.0.0
 #        with:
