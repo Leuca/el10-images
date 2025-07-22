@@ -44,7 +44,7 @@ jobs:
           sudo cp -rf disk/*.raw images/
           sudo podman stop $CID
           sudo chown -R $RUID:$RGID *
-      - name: Compress raw disk images
+      - name: Compress raw disk image
         run: |
           IMGS=(images/*.raw)
           xz -z -v -9 ${IMGS[0]}
@@ -55,7 +55,8 @@ jobs:
           extension: '.sha256.sig'
           outputFolder: 'images'
           files: |
-            images/*.iso,images/*.raw.xz
+            images/*.iso
+            images/*.raw.xz
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
