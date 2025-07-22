@@ -29,20 +29,25 @@ jobs:
         run: |
           VER=${{ steps.release.outputs.release }}
           sed -i "s/-Image/-rpi64-$VER/g" config.xml
-      - name: Create container and build image
+      - name: Create container and build images
         run: |
           export RUID=$(id -u)
           export RGID=$(id -g)
           sudo mkdir images
+          sudo mkdir iso
+          sudo mkdir disk
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
-          sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallPi" --color-output system build --description ./ --target-dir ./images
+          sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallPi" --color-output system build --description ./ --target-dir ./iso
+          sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi" --color-output system build --description ./ --target-dir ./disk
+          sudo cp -rf iso/*.iso images/
+          sudo cp -rf disk/*.raw images/
           sudo podman stop $CID
           sudo chown -R $RUID:$RGID *
-#      - name: Compress artifacts
-#        run: |
-#          IMGS=(images/*.raw)
-#          xz -z -v -9 ${IMGS[0]}
+      - name: Compress raw disk images
+        run: |
+          IMGS=(images/*.raw)
+          xz -z -v -9 ${IMGS[0]}
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
@@ -50,10 +55,10 @@ jobs:
           extension: '.sha256.sig'
           outputFolder: 'images'
           files: |
-            images/*.iso
+            images/*.iso,images/*.raw.xz
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "public_key.pem,images/*.iso,images/*.sha256.sig"
+          artifacts: "public_key.pem,images/*.iso,images/*.raw.xz,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
           commit: c10s-rpi
