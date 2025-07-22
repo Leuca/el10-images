@@ -8,7 +8,7 @@
 		</profile>
 	</profiles>
 	<preferences profiles="MinimalDiskPi">
-		<type image="oem" filesystem="xfs" kernelcmdline="console=tty0 quiet rhgb acpi=off" devicepersistency="by-uuid" bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="600" firmware="uefi" format="raw">
+		<type image="oem" filesystem="xfs" kernelcmdline="console=tty0 quiet rhgb acpi=off" devicepersistency="by-uuid" bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="600" firmware="uefi">
 			<bootloader name="grub2" timeout="5"/>
 			<size unit="G">5</size>
 			<oemconfig>
