@@ -2,9 +2,9 @@
 
 <image schemaversion="7.4" name="CentOS-Stream-Image">
 	<description type="system">
-		<author>CentOS Alternative Images SIG</author>
-		<contact>sig-altimages@centosproject.org</contact>
-		<specification>CentOS Stream Alternative Images</specification>
+		<author>Luca Magrone</author>
+		<contact>luca@magrone.cc</contact>
+		<specification>CentOS Stream Alternative Images for Raspberry Pi</specification>
 	</description>
 	<preferences>
 		<version>10</version>

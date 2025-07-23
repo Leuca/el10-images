@@ -1,13 +1,16 @@
 <image>
 	<profiles>
-		<profile name="MinimalCore" description="Minimal image core packages">
+		<profile name="MinimalCorePi" description="Minimal image core packages">
 			<requires profile="BootCore"/>
 		</profile>
-		<profile name="MinimalDiskPi" description="Minimal Disk Image for Raspberry Pi">
-			<requires profile="MinimalCore"/>
+		<profile name="MinimalDiskPi4" description="Minimal Disk Image for Raspberry Pi 4">
+			<requires profile="MinimalCorePi"/>
+		</profile>
+		<profile name="MinimalDiskPi5" description="Minimal Disk Image for Raspberry Pi 5">
+			<requires profile="MinimalCorePi"/>
 		</profile>
 	</profiles>
-	<preferences profiles="MinimalDiskPi">
+	<preferences profiles="MinimalDiskPi4">
 		<type image="oem" filesystem="xfs" kernelcmdline="console=tty0 quiet rhgb acpi=off" devicepersistency="by-uuid" bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="600" firmware="uefi">
 			<bootloader name="grub2" timeout="5"/>
 			<size unit="G">5</size>
@@ -16,7 +19,16 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<packages type="image" patternType="plusRecommended" profiles="MinimalCore">
+	<preferences profiles="MinimalDiskPi5">
+		<type image="oem" filesystem="xfs" kernelcmdline="console=tty0 quiet rhgb acpi=off" devicepersistency="by-uuid" bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="600" firmware="uefi">
+			<bootloader name="grub2" timeout="5"/>
+			<size unit="G">5</size>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<packages type="image" patternType="plusRecommended" profiles="MinimalCorePi">
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="kernel"/>
@@ -25,5 +37,14 @@
 		<ignore name="geolite2-country"/>
 		<package name="gdisk"/>
 		<package name="glibc-langpack-en"/>
+		<package name="rpi-release"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="MinimalDiskPi4">
+		<package name="boot-rpi4-config"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="MinimalDiskPi5">
+		<ignore name="kernel-core"/>
+		<package name="kernel-16k-core"/>
+		<package name="boot-rpi5-config"/>
 	</packages>
 </image>

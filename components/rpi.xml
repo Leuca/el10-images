@@ -25,6 +25,7 @@
 		<package name="kernel-modules"/>
 		<package name="kernel-modules-extra"/>
 		<package name="livesys-scripts"/>
+		<package name="rpi-release"/>
 		<ignore name="gfs2-utils"/>
 	</packages>
 </image>
