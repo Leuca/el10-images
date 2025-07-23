@@ -1,13 +1,16 @@
 <image>
 	<profiles>
-		<profile name="MinimalCorePi" description="Minimal image core packages">
+		<profile name="MinimalCorePi4" description="Minimal image core packages">
 			<requires profile="BootCore"/>
 		</profile>
+		<profile name="MinimalCorePi5" description="Minimal image core packages">
+			<requires profile="BootCore16K"/>
+		</profile>
 		<profile name="MinimalDiskPi4" description="Minimal Disk Image for Raspberry Pi 4">
-			<requires profile="MinimalCorePi"/>
+			<requires profile="MinimalCorePi4"/>
 		</profile>
 		<profile name="MinimalDiskPi5" description="Minimal Disk Image for Raspberry Pi 5">
-			<requires profile="MinimalCorePi"/>
+			<requires profile="MinimalCorePi5"/>
 		</profile>
 	</profiles>
 	<preferences profiles="MinimalDiskPi4">
@@ -28,7 +31,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<packages type="image" patternType="plusRecommended" profiles="MinimalCorePi">
+	<packages type="image" patternType="plusRecommended" profiles="MinimalCorePi4">
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="kernel"/>
@@ -38,11 +41,19 @@
 		<package name="gdisk"/>
 		<package name="glibc-langpack-en"/>
 		<package name="rpi-release"/>
-	</packages>
-	<packages type="image" patternType="plusRecommended" profiles="MinimalDiskPi4">
 		<package name="boot-rpi4-config"/>
 	</packages>
-	<packages type="image" patternType="plusRecommended" profiles="MinimalDiskPi5">
+	<packages type="image" patternType="plusRecommended" profiles="MinimalCorePi5">
+		<ignore name="dracut-config-rescue"/>
+		<ignore name="firewalld"/>
+		<ignore name="kernel"/>
+		<ignore name="kernel-16k"/>
+		<ignore name="*-firmware"/>
+		<ignore name="geolite2-city"/>
+		<ignore name="geolite2-country"/>
+		<package name="gdisk"/>
+		<package name="glibc-langpack-en"/>
+		<package name="rpi-release"/>
 		<package name="boot-rpi5-config"/>
 	</packages>
 </image>

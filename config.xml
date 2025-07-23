@@ -18,6 +18,7 @@
 	<include from="this://./repositories/epel.xml"/>
 	<include from="this://./repositories/rpi.xml"/>
 	<include from="this://./components/boot.xml"/>
+	<include from="this://./components/boot-16k.xml"/>
 	<include from="this://./components/desktop-environments.xml"/>
 	<include from="this://./components/liveinstall.xml"/>
 	<include from="this://./components/users.xml"/>

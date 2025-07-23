@@ -1,0 +1,16 @@
+<image>
+	<profiles>
+		<profile name="BootCore16K" description="Boot core packages for aarch64 16K"/>
+	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="BootCore16K">
+		<package name="grub2-efi-aa64" arch="aarch64"/>
+		<package name="grub2-efi-aa64-modules" arch="aarch64"/>
+		<package name="shim-signed-aa64" arch="aarch64"/>
+		<package name="kernel-16k-core"/>
+		<package name="systemd-oomd-defaults"/>
+		<package name="systemd-resolved"/>
+	</packages>
+	<packages type="iso" patternType="plusRecommended" profiles="BootCore16K">
+		<package name="grub2-efi-aa64-cdboot" arch="aarch64"/>
+	</packages>
+</image>
