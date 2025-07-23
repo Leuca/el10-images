@@ -43,8 +43,6 @@
 		<package name="boot-rpi4-config"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="MinimalDiskPi5">
-		<ignore name="kernel-core"/>
-		<package name="kernel-16k-core"/>
 		<package name="boot-rpi5-config"/>
 	</packages>
 </image>
