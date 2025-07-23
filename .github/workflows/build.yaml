@@ -37,15 +37,15 @@ jobs:
           sudo mkdir iso
           sudo mkdir diskpi4
           sudo mkdir diskpi5
-          sudo cp -f config.xml iso/
-          sudo cp -f config.xml diskpi4/
-          sudo cp -f config.xml diskpi5/
+          cp -f config.xml iso/
+          cp -f config.xml diskpi4/
+          cp -f config.xml diskpi5/
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
           sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallPi" --color-output system build --description ./iso --target-dir ./iso
-          sudo sed -i "s/-rpi64/-pi4/g" diskpi4/config.xml
+          sed -i "s/-rpi64/-pi4/g" diskpi4/config.xml
           sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi4" --color-output system build --description ./diskpi4 --target-dir ./diskpi4
-          sudo sed -i "s/-rpi64/-pi5/g" diskpi5/config.xml
+          sed -i "s/-rpi64/-pi5/g" diskpi5/config.xml
           sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi5" --color-output system build --description ./diskpi5 --target-dir ./diskpi5
           sudo cp -rf iso/*.iso images/
           sudo cp -rf diskpi4/*.raw images/
