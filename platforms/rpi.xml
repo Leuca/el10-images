@@ -47,7 +47,6 @@
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="kernel"/>
-		<ignore name="kernel-16k"/>
 		<ignore name="*-firmware"/>
 		<ignore name="geolite2-city"/>
 		<ignore name="geolite2-country"/>
