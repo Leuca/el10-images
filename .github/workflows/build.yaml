@@ -40,9 +40,9 @@ jobs:
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
           sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallPi" --color-output system build --description ./ --target-dir ./iso
-          sed -i "s/-rpi64/-pi4/g" config.xml
+          sudo sed -i "s/-rpi64/-pi4/g" config.xml
           sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi4" --color-output system build --description ./ --target-dir ./diskpi4
-          sed -i "s/-pi4/-pi5/g" config.xml
+          sudo sed -i "s/-pi4/-pi5/g" config.xml
           sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi5" --color-output system build --description ./ --target-dir ./diskpi5
           sudo cp -rf iso/*.iso images/
           sudo cp -rf diskpi4/*.raw images/
