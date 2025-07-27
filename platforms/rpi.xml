@@ -41,6 +41,8 @@
 		<package name="gdisk"/>
 		<package name="glibc-langpack-en"/>
 		<package name="rpi-release"/>
+		<package name="rpi-utils"/>
+		<package name="rpi-eeprom"/>
 		<package name="boot-rpi4-config"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="MinimalCorePi5">
@@ -53,6 +55,8 @@
 		<package name="gdisk"/>
 		<package name="glibc-langpack-en"/>
 		<package name="rpi-release"/>
+		<package name="rpi-utils"/>
+		<package name="rpi-eeprom"/>
 		<package name="boot-rpi5-config"/>
 	</packages>
 </image>
