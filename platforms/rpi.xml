@@ -50,6 +50,7 @@
 		<ignore name="kernel"/>
 		<ignore name="geolite2-city"/>
 		<ignore name="geolite2-country"/>
+		<ignore name="boot-rpi4-config"/>
 		<package name="gdisk"/>
 		<package name="glibc-langpack-en"/>
 		<package name="rpi-release"/>
