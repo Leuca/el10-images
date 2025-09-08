@@ -52,10 +52,8 @@ jobs:
       - name: Compress raw disk image
         run: |
           IMGS=(images/*.raw)
-          ISOS=(images/*.iso)
           xz -z -v -9 ${IMGS[0]}
           xz -z -v -9 ${IMGS[1]}
-          xz -z -v -9 ${ISOS[0]}
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
@@ -63,11 +61,11 @@ jobs:
           extension: '.sha256.sig'
           outputFolder: 'images'
           files: |
-            images/*.iso.xz
+            images/*.iso
             images/*.raw.xz
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "public_key.pem,images/*.iso.xz,images/*.raw.xz,images/*.sha256.sig"
+          artifacts: "public_key.pem,images/*.iso,images/*.raw.xz,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
           commit: c10s-rpi
