@@ -53,9 +53,9 @@ jobs:
         run: |
           IMGS=(images/*.raw)
           ISOS=(images/*.iso)
-          xz -z -v -9 ${IMGS[0]}
-          xz -z -v -9 ${IMGS[1]}
-          xz -z -v -9 ${ISOS[0]}
+          xz -z -v -8 ${IMGS[0]}
+          xz -z -v -8 ${IMGS[1]}
+          xz -z -v -8 ${ISOS[0]}
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
