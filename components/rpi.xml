@@ -27,6 +27,9 @@
 		<package name="kernel-modules-extra"/>
 		<package name="livesys-scripts"/>
 		<package name="rpi-release"/>
+		<package name="rpi-utils"/>
+		<package name="rpi-eeprom"/>
+		<package name="boot-rpi4-config"/>
 		<ignore name="gfs2-utils"/>
 	</packages>
 </image>
