@@ -1,7 +1,7 @@
 <image>
 	<profiles>
 		<profile name="LiveInstallPi" description="Live Install ISO for Raspberry Pi">
-			<requires profile="MIN-Desktop"/>
+			<requires profile="GNOME-Desktop"/>
 			<requires profile="BootCore"/>
 		</profile>
 	</profiles>
