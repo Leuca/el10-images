@@ -31,5 +31,6 @@
 		<package name="rpi-eeprom"/>
 		<package name="boot-rpi4-config"/>
 		<ignore name="gfs2-utils"/>
+		<ignore name="uboot-rpi4-config"/>
 	</packages>
 </image>
