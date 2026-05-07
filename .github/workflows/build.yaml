@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get -y install podman xz-utils
-          sudo podman pull centos:stream10-development
+          sudo podman pull centos:latest
       - name: Get source
         uses: actions/checkout@v4
         with:
