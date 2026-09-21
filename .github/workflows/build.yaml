@@ -2,7 +2,7 @@ name: Image CI
 on:
   push:
     branches:
-      - c10s-rpi
+      - c10s-sky1
     pull_requests:
 
 permissions: write-all
@@ -28,33 +28,22 @@ jobs:
       - name: Version source
         run: |
           VER=${{ steps.release.outputs.release }}
-          sed -i "s/-Image/-rpi64-$VER/g" config.xml
+          sed -i "s/-Image/-sky1-$VER/g" config.xml
       - name: Create container and build images
         run: |
           export RUID=$(id -u)
           export RGID=$(id -g)
           sudo mkdir images
           sudo mkdir iso
-          sudo mkdir diskpi4
-          sudo mkdir diskpi5
           sudo podman build --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
-          sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallPi" --color-output system build --description ./ --target-dir ./iso
-          sudo sed -i "s/-rpi64/-pi4/g" config.xml
-          sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi4" --color-output system build --description ./ --target-dir ./diskpi4
-          sudo sed -i "s/-pi4/-pi5/g" config.xml
-          sudo podman exec $CID kiwi-ng --type=oem --profile="MinimalDiskPi5" --color-output system build --description ./ --target-dir ./diskpi5
+          sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallSky1" --color-output system build --description ./ --target-dir ./iso
           sudo cp -rf iso/*.iso images/
-          sudo cp -rf diskpi4/*.raw images/
-          sudo cp -rf diskpi5/*.raw images/
           sudo podman stop $CID
           sudo chown -R $RUID:$RGID *
-      - name: Compress raw disk image
+      - name: Compress iso image
         run: |
-          IMGS=(images/*.raw)
           ISOS=(images/*.iso)
-          xz -z -v -8 ${IMGS[0]}
-          xz -z -v -8 ${IMGS[1]}
           xz -z -v -8 ${ISOS[0]}
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
@@ -64,10 +53,9 @@ jobs:
           outputFolder: 'images'
           files: |
             images/*.iso.xz
-            images/*.raw.xz
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "public_key.pem,images/*.iso.xz,images/*.raw.xz,images/*.sha256.sig"
+          artifacts: "public_key.pem,images/*.iso.xz,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
-          commit: c10s-rpi
+          commit: c10s-sky1
