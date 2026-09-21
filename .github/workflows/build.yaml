@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Release string
-        run: echo "release=$(date +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT"
+        run: echo "release=sky1-$(date +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT"
         id: release
       - name: Setup Podman
         run: |
@@ -28,7 +28,7 @@ jobs:
       - name: Version source
         run: |
           VER=${{ steps.release.outputs.release }}
-          sed -i "s/-Image/-sky1-$VER/g" config.xml
+          sed -i "s/-Image/-$VER/g" config.xml
       - name: Create container and build images
         run: |
           export RUID=$(id -u)
@@ -45,6 +45,25 @@ jobs:
         run: |
           ISOS=(images/*.iso)
           xz -z -v -8 ${ISOS[0]}
+      - name: Check release asset size
+        run: |
+          # GitHub refuses release assets over 2 GiB. The erofs payload is
+          # already lzma-compressed, so xz only buys about 3% - the headroom
+          # has to come from the image contents, not the compressor.
+          LIMIT=$((2 * 1024 * 1024 * 1024))
+          WARN=$((LIMIT * 90 / 100))
+          rc=0
+          for f in images/*.xz; do
+            sz=$(stat -c%s "$f")
+            printf '%s: %s bytes (%s%% of the 2 GiB limit)\n' \
+              "$f" "$sz" "$((sz * 100 / LIMIT))"
+            if [ "$sz" -ge "$LIMIT" ]; then
+              echo "::error::$f exceeds the 2 GiB release asset limit"; rc=1
+            elif [ "$sz" -ge "$WARN" ]; then
+              echo "::warning::$f is within 10% of the 2 GiB release asset limit"
+            fi
+          done
+          exit $rc
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
