@@ -1,0 +1,36 @@
+<image>
+	<profiles>
+		<profile name="LiveInstallSky1" description="Live install ISO for CIX Sky1 (Radxa Orion O6N)">
+			<requires profile="GNOME-Desktop"/>
+			<requires profile="BootCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="LiveInstallSky1">
+		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_Sky1" primary="true" flags="dmsquash"
+			filesystem="erofs" erofscompression="lzma,level=9" fscreateoptions="-b 4096"
+			firmware="uefi" efifatimagesize="30" kernelcmdline="console=tty0 quiet rhgb" mediacheck="true"
+		>
+			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
+		</type>
+	</preferences>
+	<packages type="iso" patternType="plusRecommended" profiles="LiveInstallSky1">
+		<namedCollection name="anaconda-tools"/>
+		<package name="anaconda"/>
+		<package name="anaconda-install-env-deps"/>
+		<package name="anaconda-liveinst"/>
+		<package name="dracut-live"/>
+		<package name="glibc-langpack-en"/>
+		<package name="isomd5sum"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="kernel-modules-extra"/>
+		<package name="livesys-scripts"/>
+		<package name="sky1-release"/>
+		<!-- enough to inspect the port from a shell -->
+		<package name="pciutils"/>
+		<package name="usbutils"/>
+		<package name="alsa-utils"/>
+		<ignore name="dracut-config-rescue"/>
+		<ignore name="gfs2-utils"/>
+	</packages>
+</image>

@@ -1,5 +1,5 @@
 <image>
-	<users profiles="Azure,AWSEC2,OpenStack,LiveInstall">
+	<users profiles="Azure,AWSEC2,OpenStack,LiveInstall,LiveInstallSky1">
 		<!-- The password here does not matter, it will be erased in config.sh -->
 		<user name="root" groups="root" password="linux" home="/root" pwdformat="plain" />
 	</users>

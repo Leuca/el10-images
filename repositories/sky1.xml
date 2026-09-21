@@ -1,0 +1,7 @@
+<image>
+	<repository type="rpm-md" alias="sky1" profiles="LiveInstallSky1" sourcetype="baseurl" repository_gpgcheck="false" package_gpgcheck="true" priority="1">
+		<source path="https://download.copr.fedorainfracloud.org/results/lucamagrone/el10-sky1/centos-stream-$releasever-$basearch/">
+			<signing key="https://download.copr.fedorainfracloud.org/results/lucamagrone/el10-sky1/pubkey.gpg"/>
+		</source>
+	</repository>
+</image>
