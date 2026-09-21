@@ -1,7 +1,6 @@
 <image>
 	<profiles>
 		<profile name="LiveInstallSky1" description="Live install ISO for CIX Sky1 (Radxa Orion O6N)">
-			<requires profile="GNOME-Desktop"/>
 			<requires profile="BootCore"/>
 		</profile>
 	</profiles>
@@ -13,7 +12,22 @@
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
-	<packages type="iso" patternType="plusRecommended" profiles="LiveInstallSky1">
+	<!--
+	  Deliberately does not require GNOME-Desktop: that pulls DesktopCommon
+	  (firefox, flatpak, multimedia, container-management, print-client,
+	  workstation-product), none of which an installer image needs. Measured
+	  on CS10 aarch64: the full stack is 3.6 GiB installed against 1.9 GiB
+	  for the set below, and the ISO has to stay under GitHub's 2 GiB
+	  release asset limit.
+
+	  The gnome-desktop collection stays, because anaconda is run from the
+	  live session in graphical mode; fonts and hardware-support stay
+	  because the GUI needs glyphs and the board needs firmware.
+	-->
+	<packages type="iso" patternType="onlyRequired" profiles="LiveInstallSky1">
+		<namedCollection name="gnome-desktop"/>
+		<namedCollection name="fonts"/>
+		<namedCollection name="hardware-support"/>
 		<namedCollection name="anaconda-tools"/>
 		<package name="anaconda"/>
 		<package name="anaconda-install-env-deps"/>

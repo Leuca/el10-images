@@ -19,7 +19,7 @@ jobs:
       - name: Setup Podman
         run: |
           sudo apt update
-          sudo apt-get -y install podman xz-utils
+          sudo apt-get -y install podman
           sudo podman pull centos:latest
       - name: Get source
         uses: actions/checkout@v4
@@ -41,19 +41,16 @@ jobs:
           sudo cp -rf iso/*.iso images/
           sudo podman stop $CID
           sudo chown -R $RUID:$RGID *
-      - name: Compress iso image
-        run: |
-          ISOS=(images/*.iso)
-          xz -z -v -8 ${ISOS[0]}
       - name: Check release asset size
         run: |
-          # GitHub refuses release assets over 2 GiB. The erofs payload is
-          # already lzma-compressed, so xz only buys about 3% - the headroom
-          # has to come from the image contents, not the compressor.
+          # GitHub refuses release assets over 2 GiB. The ISO is shipped
+          # uncompressed: the erofs payload is already lzma level 9, so xz
+          # recovered only ~3% for 10+ minutes of runner time. Headroom has
+          # to come from the image contents, not from a compressor.
           LIMIT=$((2 * 1024 * 1024 * 1024))
           WARN=$((LIMIT * 90 / 100))
           rc=0
-          for f in images/*.xz; do
+          for f in images/*.iso; do
             sz=$(stat -c%s "$f")
             printf '%s: %s bytes (%s%% of the 2 GiB limit)\n' \
               "$f" "$sz" "$((sz * 100 / LIMIT))"
@@ -71,10 +68,10 @@ jobs:
           extension: '.sha256.sig'
           outputFolder: 'images'
           files: |
-            images/*.iso.xz
+            images/*.iso
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "public_key.pem,images/*.iso.xz,images/*.sha256.sig"
+          artifacts: "public_key.pem,images/*.iso,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
           commit: c10s-sky1
