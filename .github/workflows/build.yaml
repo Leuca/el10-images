@@ -9,7 +9,8 @@ concurrency:
   group: image-${{ github.ref }}
   cancel-in-progress: false
 
-permissions: write-all
+permissions:
+  contents: write
 
 jobs:
   image:
@@ -26,9 +27,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get -y install podman
-          sudo podman pull centos:latest
       - name: Get source
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
       - name: Version source
@@ -41,7 +41,7 @@ jobs:
           export RGID=$(id -g)
           sudo mkdir images
           sudo mkdir iso
-          sudo podman build --tag imagebuilder -f Containerfile
+          sudo podman build --pull=always --tag imagebuilder -f Containerfile
           CID="$(sudo podman run --privileged --rmi -v /dev:/dev:dev,z -v $PWD:/sources:rw,z,shared,bind,U --workdir=/sources -d imagebuilder)"
           sudo podman exec $CID kiwi-ng --type=iso --profile="LiveInstallSky1" --color-output system build --description ./ --target-dir ./iso
           sudo cp -rf iso/*.iso images/
@@ -83,15 +83,24 @@ jobs:
           } > images/release-notes.md
           cat images/release-notes.md
       - name: Sign
-        uses: FKLC/sign-files-action@v1.0.0
-        with:
-          privateKey: ${{ secrets.PRIVATE_KEY }}
-          extension: '.sha256.sig'
-          outputFolder: 'images'
-          files: |
-            images/*.iso
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        run: |
+          # A raw RSA-SHA256 (PKCS#1 v1.5) signature of each file, the same
+          # bytes FKLC/sign-files-action produced. Verify with:
+          #   openssl dgst -sha256 -verify public_key.pem \
+          #     -signature <file>.sha256.sig <file>
+          # Done here so the private key never reaches third-party code.
+          umask 077
+          key="$RUNNER_TEMP/signing.pem"
+          trap 'rm -f "$key"' EXIT
+          printf '%s\n' "$PRIVATE_KEY" > "$key"
+          for f in images/*.iso; do
+            openssl dgst -sha256 -sign "$key" -out "$f.sha256.sig" "$f"
+            openssl dgst -sha256 -verify public_key.pem -signature "$f.sha256.sig" "$f"
+          done
       - name: Create Release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           artifacts: "public_key.pem,images/*.iso,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
