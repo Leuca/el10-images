@@ -1,9 +1,13 @@
-name: Image CI
+name: rpi64 Image CI
 on:
   push:
     branches:
       - c10s-rpi
-    pull_requests:
+
+# One build per branch at a time; a push during a build queues behind it.
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions: write-all
 
@@ -14,7 +18,9 @@ jobs:
 
     steps:
       - name: Release string
-        run: echo "release=$(date +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "release=rpi64-$(date -u +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_OUTPUT"
         id: release
       - name: Setup Podman
         run: |
@@ -28,7 +34,7 @@ jobs:
       - name: Version source
         run: |
           VER=${{ steps.release.outputs.release }}
-          sed -i "s/-Image/-rpi64-$VER/g" config.xml
+          sed -i "s/-Image/-$VER/g" config.xml
       - name: Create container and build images
         run: |
           export RUID=$(id -u)
@@ -56,6 +62,21 @@ jobs:
           xz -z -v -8 ${IMGS[0]}
           xz -z -v -8 ${IMGS[1]}
           xz -z -v -8 ${ISOS[0]}
+      - name: Release notes
+        run: |
+          pkg() { awk -F'|' -v n="$1" '$1 == n { print $3 "-" $4 }' iso/*.packages; }
+          {
+            echo "CentOS Stream 10 images for the **Raspberry Pi 4 and 5**, aarch64:"
+            echo "a live installer ISO plus ready-to-flash Pi 4 and Pi 5 disk images."
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| kernel | $(pkg kernel) |"
+            echo "| built from | ${{ github.sha }} (branch c10s-rpi) |"
+            echo
+            echo "Verify with public_key.pem and the .sha256.sig files."
+          } > images/release-notes.md
+          cat images/release-notes.md
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
@@ -70,4 +91,10 @@ jobs:
         with:
           artifacts: "public_key.pem,images/*.iso.xz,images/*.raw.xz,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
-          commit: c10s-rpi
+          name: "Raspberry Pi 4/5 CentOS Stream 10 - ${{ steps.release.outputs.date }}"
+          bodyFile: images/release-notes.md
+          # Tag the commit that was built, not whatever the branch points to now.
+          commit: ${{ github.sha }}
+          # Two platforms share this repository's releases; "Latest" would just
+          # be whichever built last, so neither claims it.
+          makeLatest: false
