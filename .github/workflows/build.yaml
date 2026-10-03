@@ -1,9 +1,13 @@
-name: Image CI
+name: Sky1 Image CI
 on:
   push:
     branches:
       - c10s-sky1
-    pull_requests:
+
+# One build per branch at a time; a push during a build queues behind it.
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions: write-all
 
@@ -14,7 +18,9 @@ jobs:
 
     steps:
       - name: Release string
-        run: echo "release=sky1-$(date +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "release=sky1-$(date -u +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_OUTPUT"
         id: release
       - name: Setup Podman
         run: |
@@ -61,6 +67,21 @@ jobs:
             fi
           done
           exit $rc
+      - name: Release notes
+        run: |
+          pkg() { awk -F'|' -v n="$1" '$1 == n { print $3 "-" $4 }' iso/*.packages; }
+          {
+            echo "CentOS Stream 10 live installer for the **Radxa Orion O6N** (CIX Sky1), aarch64."
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| kernel | $(pkg kernel) |"
+            echo "| sky1-release | $(pkg sky1-release) |"
+            echo "| built from | ${{ github.sha }} (branch c10s-sky1) |"
+            echo
+            echo "Verify with public_key.pem and the .sha256.sig file."
+          } > images/release-notes.md
+          cat images/release-notes.md
       - name: Sign
         uses: FKLC/sign-files-action@v1.0.0
         with:
@@ -74,4 +95,10 @@ jobs:
         with:
           artifacts: "public_key.pem,images/*.iso,images/*.sha256.sig"
           tag: ${{ steps.release.outputs.release }}
-          commit: c10s-sky1
+          name: "Radxa Orion O6N (Sky1) CentOS Stream 10 - ${{ steps.release.outputs.date }}"
+          bodyFile: images/release-notes.md
+          # Tag the commit that was built, not whatever the branch points to now.
+          commit: ${{ github.sha }}
+          # Two platforms share this repository's releases; "Latest" would just
+          # be whichever built last, so neither claims it.
+          makeLatest: false
