@@ -7,7 +7,7 @@
 	<preferences profiles="LiveInstallSky1">
 		<type image="iso" publisher="CentOS AltImages SIG" volid="CentOS_Sky1" primary="true" flags="dmsquash"
 			filesystem="erofs" erofscompression="lzma,level=9" fscreateoptions="-b 4096"
-			firmware="uefi" efifatimagesize="30" kernelcmdline="console=tty0 quiet rhgb" mediacheck="true"
+			firmware="uefi" efifatimagesize="30" kernelcmdline="console=tty0 console=ttyAMA0,115200 quiet rhgb" mediacheck="true"
 		>
 			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
