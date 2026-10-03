@@ -32,6 +32,10 @@
 		<package name="anaconda"/>
 		<package name="anaconda-install-env-deps"/>
 		<package name="anaconda-liveinst"/>
+		<!-- anaconda's RDP mode runs a headless gnome-kiosk served by
+		     gnome-remote-desktop; only anaconda-install-img-deps pulls them in -->
+		<package name="gnome-kiosk"/>
+		<package name="gnome-remote-desktop"/>
 		<package name="dracut-live"/>
 		<package name="glibc-langpack-en"/>
 		<package name="isomd5sum"/>

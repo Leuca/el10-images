@@ -79,6 +79,11 @@ if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	if [[ "$kiwi_profiles" == *"GNOME"* ]]; then
 		echo 'livesys_session="gnome"' > /etc/sysconfig/livesys
 	fi
+	## Sky1 installs the gnome-desktop collection without the GNOME-Desktop
+	## profile (see components/sky1.xml), so the check above misses it
+	if [[ "$kiwi_profiles" == *"LiveInstallSky1"* ]]; then
+		echo 'livesys_session="gnome"' > /etc/sysconfig/livesys
+	fi
 	if [[ "$kiwi_profiles" == *"KDE"* ]]; then
 		echo 'livesys_session="kde"' > /etc/sysconfig/livesys
 	fi
