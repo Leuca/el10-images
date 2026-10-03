@@ -80,9 +80,22 @@ if [[ "$kiwi_profiles" == *"Live"* ]]; then
 		echo 'livesys_session="gnome"' > /etc/sysconfig/livesys
 	fi
 	## Sky1 installs the gnome-desktop collection without the GNOME-Desktop
-	## profile (see components/sky1.xml), so the check above misses it
+	## profile (see components/sky1.xml), so the check above misses it.
+	## Its session is livesys-gnome run as if gnome-initial-setup were not
+	## installed: livesys-gnome only autologins liveuser and starts the
+	## installer when /var/lib/gnome-initial-setup is absent, and otherwise
+	## hands the live session to gnome-initial-setup, which here stops after
+	## creating a user. The package stays installed because anaconda skips
+	## its own user spoke and leaves that to gnome-initial-setup on the
+	## installed system's first boot.
 	if [[ "$kiwi_profiles" == *"LiveInstallSky1"* ]]; then
-		echo 'livesys_session="gnome"' > /etc/sysconfig/livesys
+		echo 'livesys_session="sky1"' > /etc/sysconfig/livesys
+		cat > /usr/libexec/livesys/sessions.d/livesys-sky1 << 'SKY1_EOF'
+#!/bin/sh
+# live-sky1: livesys-gnome without gnome-initial-setup in the live session
+eval "$(sed 's|-d /var/lib/gnome-initial-setup|-d /var/lib/livesys/no-gnome-initial-setup|g' /usr/libexec/livesys/sessions.d/livesys-gnome)"
+SKY1_EOF
+		chmod 755 /usr/libexec/livesys/sessions.d/livesys-sky1
 	fi
 	if [[ "$kiwi_profiles" == *"KDE"* ]]; then
 		echo 'livesys_session="kde"' > /etc/sysconfig/livesys
