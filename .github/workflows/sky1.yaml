@@ -108,6 +108,3 @@ jobs:
           bodyFile: images/release-notes.md
           # Tag the commit that was built, not whatever the branch points to now.
           commit: ${{ github.sha }}
-          # Two platforms share this repository's releases; "Latest" would just
-          # be whichever built last, so neither claims it.
-          makeLatest: false
